@@ -1,0 +1,23 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="incognito128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#666666;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#333333;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#999999;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="64" cy="64" r="60" fill="url(#incognito128)" stroke="#888888" stroke-width="4"/>
+  
+  <!-- Bookmark icon -->
+  <path d="M 32 25 L 96 25 L 96 100 L 64 85 L 32 100 Z" fill="#1a1a1a" stroke="#cccccc" stroke-width="2"/>
+  
+  <!-- Incognito glasses -->
+  <rect x="42" y="42" width="16" height="8" fill="#cccccc" rx="2"/>
+  <rect x="70" y="42" width="16" height="8" fill="#cccccc" rx="2"/>
+  <line x1="58" y1="46" x2="70" y2="46" stroke="#cccccc" stroke-width="3"/>
+  
+  <!-- Text "INC" for Incognito -->
+  <text x="64" y="75" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="#cccccc">INC</text>
+</svg>

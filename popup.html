@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="popup-container">
+      <h3>SynthCache</h3>
+      <p>Retro-futuristic bookmark organization with synthwave vibes.</p>
+      
+      <button id="open-manager-button">Open Bookmark Manager</button>
+      <button id="start-button">Analyze All Open Tabs</button>
+      <button id="analyze-bookmarks-button">Analyze All Existing Bookmarks</button>
+      
+      <div class="info">
+        <p><strong>Features:</strong></p>
+        <ul>
+          <li>✓ Auto-extract keywords</li>
+          <li>✓ Detect NSFW content</li>
+          <li>✓ Normal vs Incognito folders</li>
+          <li>✓ HTML import support</li>
+          <li>✓ Icon changes with mode</li>
+        </ul>
+      </div>
+      
+      <div class="status" id="status"></div>
+    </div>
+    <script src="browser-polyfill.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

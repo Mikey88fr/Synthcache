@@ -1,0 +1,53 @@
+{
+  "manifest_version": 2,
+  "name": "SynthCache",
+  "version": "1.0",
+  "description": "Synthwave-powered bookmark organizer with auto-tagging and retro-futuristic vibes",
+
+  "permissions": [
+    "bookmarks",
+    "storage", 
+    "notifications",
+    "tabs",
+    "activeTab",
+    "downloads",
+    "<all_urls>"
+  ],
+
+  "background": {
+    "scripts": ["browser-polyfill.js", "background.js"],
+    "persistent": false
+  },
+
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["browser-polyfill.js", "content-script.js"],
+    "run_at": "document_idle"
+  }],
+
+  "browser_action": {
+    "default_title": "SynthCache",
+    "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+
+  "web_accessible_resources": [
+    "manager.html",
+    "manager.css",
+    "manager.js"
+  ],
+
+  "applications": {
+    "gecko": {
+      "id": "synthcache@extension.local",
+      "strict_min_version": "57.0"
+    }
+  },
+
+  "incognito": "spanning"
+}

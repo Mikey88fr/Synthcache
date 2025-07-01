@@ -1,0 +1,6 @@
+{
+  "type": "webExtension",
+  "platform": "firefox",
+  "language": "javascript",
+  "excludeFromJava": true
+}

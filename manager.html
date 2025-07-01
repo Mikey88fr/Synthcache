@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SynthCache Manager</title>
+    <link rel="stylesheet" href="manager.css">
+</head>
+<body>
+    <div class="manager-container">
+        <header class="manager-header">
+            <h1>SynthCache Manager</h1>
+            <div class="header-controls">
+                <button id="import-html-btn" class="control-btn">Import HTML</button>
+                <button id="analyze-all-btn" class="control-btn">Analyze All</button>
+                <button id="refresh-btn" class="control-btn">Refresh</button>
+                <div class="debug-controls">
+                    <button id="save-debug-btn" class="control-btn debug-btn">Save Debug Logs</button>
+                    <button id="clear-debug-btn" class="control-btn debug-btn">Clear Debug Logs</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="manager-content">
+            <aside class="sidebar">
+                <div class="filter-section">
+                    <h3>Filters</h3>
+                    <input type="text" id="search-input" placeholder="Search bookmarks..." class="search-box">
+                    
+                    <div class="folder-filters">
+                        <label class="filter-option">
+                            <input type="checkbox" id="filter-normal" checked>
+                            <span>Normal Browsing</span>
+                        </label>
+                        <label class="filter-option" id="nsfw-filter-container">
+                            <input type="checkbox" id="filter-nsfw">
+                            <span>Private Content</span>
+                        </label>
+                    </div>
+                    
+                    <div class="tag-filters">
+                        <h4>Popular Tags</h4>
+                        <div id="tag-cloud" class="tag-cloud"></div>
+                    </div>
+                </div>
+                
+                <div class="stats-section">
+                    <h3>Statistics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-bookmarks">0</span>
+                            <span class="stat-label">Total</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="tagged-bookmarks">0</span>
+                            <span class="stat-label">Tagged</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="nsfw-bookmarks">0</span>
+                            <span class="stat-label">Private</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="progress-section" id="progress-section" style="display: none;">
+                    <h3>Analysis Progress</h3>
+                    <div class="progress-info">
+                        <div class="progress-stats">
+                            <span id="progress-text">Ready to analyze...</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <span class="progress-percentage" id="progress-percentage">0%</span>
+                        </div>
+                        <div class="progress-details">
+                            <div class="progress-detail">
+                                <span class="progress-label">Processed:</span>
+                                <span class="progress-value" id="processed-count">0</span>
+                            </div>
+                            <div class="progress-detail">
+                                <span class="progress-label">Success:</span>
+                                <span class="progress-value success" id="success-count">0</span>
+                            </div>
+                            <div class="progress-detail">
+                                <span class="progress-label">Failed:</span>
+                                <span class="progress-value failed" id="failed-count">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="bookmark-list-container">
+                <div class="list-controls">
+                    <div class="view-controls">
+                        <button id="view-grid" class="view-btn active">Grid</button>
+                        <button id="view-list" class="view-btn">List</button>
+                    </div>
+                    <div class="sort-controls">
+                        <select id="sort-select">
+                            <option value="title">Sort by Title</option>
+                            <option value="date">Sort by Date</option>
+                            <option value="folder">Sort by Folder</option>
+                            <option value="tags">Sort by Tags</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="bookmark-list" class="bookmark-list grid-view">
+                    <!-- Bookmarks will be loaded here -->
+                </div>
+                
+                <div id="loading-indicator" class="loading">
+                    <div class="spinner"></div>
+                    <span>Loading bookmarks...</span>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- HTML Import Modal -->
+    <div id="import-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Import HTML Bookmarks</h2>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="import-options">
+                    <label class="import-option">
+                        <input type="radio" name="import-mode" value="normal" checked>
+                        <span>Import to Normal Browsing</span>
+                    </label>
+                    <label class="import-option">
+                        <input type="radio" name="import-mode" value="incognito">
+                        <span>Import to Incognito Browsing</span>
+                    </label>
+                </div>
+                <div class="file-drop-zone" id="file-drop-zone">
+                    <div class="drop-content">
+                        <span class="drop-icon">📁</span>
+                        <span class="drop-text">Drop HTML file here or</span>
+                        <button class="browse-btn">Browse Files</button>
+                    </div>
+                    <input type="file" id="file-input" accept=".html" style="display: none;">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="import-confirm-btn" class="confirm-btn" disabled>Import Bookmarks</button>
+                <button id="import-cancel-btn" class="cancel-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="browser-polyfill.js"></script>
+    <script src="manager.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+.popup-container {
+  width: 340px;
+  padding: 20px;
+  font-family: 'Orbitron', 'Courier New', monospace;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a0b33 30%, #2d1b69 60%, #0f0f23 100%);
+  color: #00ffff;
+  border-radius: 12px;
+  border: 2px solid #ff00ff;
+  box-shadow: 
+    0 0 20px #ff00ff,
+    0 0 40px #00ffff,
+    inset 0 0 20px rgba(255, 0, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.popup-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 98px,
+    rgba(0, 255, 255, 0.03) 100px
+  );
+  pointer-events: none;
+}
+
+h3 {
+  margin: 0 0 15px 0;
+  color: #ff00ff;
+  text-align: center;
+  font-weight: 900;
+  font-size: 18px;
+  text-shadow: 
+    0 0 10px #ff00ff,
+    0 0 20px #ff00ff,
+    0 0 30px #ff00ff;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+p {
+  margin: 15px 0;
+  font-size: 13px;
+  color: #00ffff;
+  text-shadow: 0 0 5px #00ffff;
+  line-height: 1.4;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(45deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+  color: #00ffff;
+  border: 2px solid #ff00ff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  margin: 8px 0;
+  font-family: 'Orbitron', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 0 10px rgba(255, 0, 255, 0.5),
+    inset 0 0 10px rgba(0, 255, 255, 0.1);
+  text-shadow: 0 0 5px #00ffff;
+}
+
+button:hover {
+  background: linear-gradient(45deg, rgba(255, 0, 255, 0.4), rgba(0, 255, 255, 0.4));
+  box-shadow: 
+    0 0 20px #ff00ff,
+    0 0 30px #00ffff,
+    inset 0 0 15px rgba(255, 0, 255, 0.2);
+  transform: translateY(-2px);
+  color: #ffffff;
+  text-shadow: 
+    0 0 8px #00ffff,
+    0 0 12px #ff00ff;
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 0 15px #ff00ff,
+    inset 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+.info {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+  padding: 15px;
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  border-radius: 8px;
+  margin: 15px 0;
+  box-shadow: 
+    0 0 10px rgba(0, 255, 255, 0.3),
+    inset 0 0 10px rgba(255, 0, 255, 0.1);
+}
+
+.info p {
+  color: #ff00ff;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+.info ul {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.info li {
+  font-size: 12px;
+  margin: 5px 0;
+  color: #00ffff;
+  text-shadow: 0 0 3px #00ffff;
+}
+
+.info li::before {
+  content: '▶ ';
+  color: #ff00ff;
+  font-weight: bold;
+  margin-right: 5px;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+.status {
+  font-size: 12px;
+  color: #00ffff;
+  text-align: center;
+  text-shadow: 0 0 5px #00ffff;
+  margin-top: 15px;
+  font-family: 'Orbitron', monospace;
+}
+
+/* Pulsing animation for extra vaporwave vibes */
+@keyframes pulse {
+  0% { text-shadow: 0 0 5px #ff00ff; }
+  50% { text-shadow: 0 0 20px #ff00ff, 0 0 30px #00ffff; }
+  100% { text-shadow: 0 0 5px #ff00ff; }
+}
+
+h3 {
+  animation: pulse 2s infinite;
+}
+
+/* Subtle grid pattern overlay */
+.popup-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.3;
+}
