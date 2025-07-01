@@ -1,167 +1,187 @@
-# SynthCache - Firefox Extension
 
-A retro-futuristic Firefox extension that organizes your bookmarks with synthwave style and auto-tagging intelligence.
+#  SynthCache – Firefox Extension
 
-## Core Features
+_A retro-futuristic bookmark manager that auto-tags, organizes, and styles your web clutter with synthwave precision._
 
-### **Three-Directory System**
-- **Normal Browsing** - Regular bookmarks with auto-tags
-- **Incognito Browsing** - Private browsing bookmarks (separate folder)
-- **Private Content** - Hidden NSFW content (nested in incognito, only accessible in incognito mode)
+---
 
-### **Auto-Tagging System**
-- Extracts 5 most relevant keywords from page titles and descriptions
-- Removes stop words and validates tag quality
-- Updates bookmark titles with `[tag1, tag2, tag3]` format
-- Analyzes existing bookmarks and new ones automatically
+##  Core Features
 
-### **Dynamic Toolbar Icons**
-- **Normal Mode**: Vibrant synthwave colors (magenta/cyan)
-- **Incognito Mode**: Grayscale with incognito glasses
-- Icon changes automatically when switching modes
+###  Three-Directory System
+- **Normal Browsing** – Bookmarks with smart auto-tags
+- **Incognito Browsing** – Stored in a separate folder
+- **Private Content** – Hidden NSFW bookmarks (nested in Incognito; viewable only in private mode)
 
-### **HTML Import**
-- Import HTML bookmark files with automatic tagging
-- Choose target directory (Normal or Incognito)
-- Processes all bookmarks with intelligent analysis
+###  Auto-Tagging System
+- Extracts top 5 keywords from title and meta tags
+- Removes stop words and filters short/noisy terms
+- Rewrites titles with `[tag1, tag2, tag3]` format
+- Works with both new and existing bookmarks
 
-### **Built-in Bookmark Manager**
-- Filter by directory, tags, or search terms
-- Grid and List view modes
-- Popular tags cloud
-- Statistics dashboard
-- Sort by title, date, folder, or tag count
+###  Dynamic Toolbar Icons
+- **Normal Mode**: Neon synthwave magenta/cyan
+- **Incognito Mode**: Grayscale + incognito glasses
+- Auto-switches icon based on tab state
 
-## Installation
+###  HTML Bookmark Import
+- Import `.html` bookmark exports
+- Choose import target: Normal or Incognito
+- Runs full tag analysis on import
+
+###  Built-in Bookmark Manager
+- Filter by folder, tags, or search terms
+- Grid/List view toggles
+- Tag cloud and usage stats
+- Sort by title, date, folder, or tag density
+
+---
+
+##  Installation
 
 ### Method 1: Developer Mode (Recommended)
-1. Open Firefox and go to `about:debugging`
-2. Click "This Firefox" → "Load Temporary Add-on"
-3. Navigate to the extension folder and select `manifest.json`
-4. The extension will be loaded and icon appears in toolbar
+1. Visit `about:debugging` in Firefox  
+2. Click **This Firefox** → **Load Temporary Add-on**  
+3. Select the `manifest.json` in your project folder  
+4. Icon will appear in the toolbar
 
-### Method 2: Package and Install
-1. Zip all files (excluding `.git`, `README.md`)
-2. Rename to `.xpi` extension
-3. Drag and drop into Firefox or use `about:addons`
+### Method 2: Packaged XPI Install
+1. Zip all extension files (exclude `.git`, `README.md`)
+2. Rename the `.zip` to `.xpi`
+3. Drag & drop into Firefox or install via `about:addons`
 
-## 📁 File Structure
+---
+
+##  File Structure
+
+<details>
+<summary>Click to expand</summary>
 
 ```
 synthcache/
-├── manifest.json              # Firefox extension manifest
-├── background.js              # Core logic & bookmark management
-├── content-script.js          # Page analysis & keyword extraction
-├── popup.html/js/css         # Toolbar popup interface
-├── manager.html/js/css       # Full bookmark manager
-├── browser-polyfill.js       # Cross-browser compatibility
-├── icon-*.svg                # Normal mode icons (synthwave)
-├── icon-incognito-*.svg      # Incognito mode icons (grayscale)
-└── README.md                 # This file
+├── manifest.json               # Extension manifest
+├── background.js               # Core logic & bookmarking
+├── content-script.js           # Page parsing & tagging
+├── popup.html/js/css           # Toolbar popup interface
+├── manager.html/js/css         # Full-screen manager
+├── browser-polyfill.js         # Cross-browser glue
+├── icon-*.svg                  # Default mode icons
+├── icon-incognito-*.svg        # Incognito mode icons
+└── README.md                   # This file
 ```
+
+</details>
+
+---
 
 ##  How It Works
 
-### **Page Analysis**
-1. Content script runs on every page
-2. Extracts keywords from title, meta description, and headings
-3. Applies strict filtering (4+ characters, no numbers, no stop words)
-4. Detects video content for NSFW classification
+###  Page Analysis
+- Scripts parse every visited page
+- Extract keywords from `<title>`, meta, `<h1>`-`<h3>`
+- Filters: min length 4, alpha-only, stop-word blacklist
+- Detects video/NSFW cues for classification
 
-### **Bookmark Organization**
-1. **Normal browsing** → "Normal Browsing" folder
-2. **Incognito browsing** → "Incognito Browsing" folder  
-3. **NSFW content** → "Private Content" (hidden in incognito folder)
-4. Tags added to bookmark titles: `[keyword1, keyword2, keyword3]`
+###  Bookmark Organization
+- `Normal` → "Normal Browsing"
+- `Incognito` → "Incognito Browsing"
+- `NSFW` → Nested "Private Content" folder (Incognito only)
+- Tagging applied to titles like `[vaporwave, chrome, ai]`
 
-### **Icon Management**
-- Monitors active tab incognito state
-- Updates toolbar icon dynamically
-- Normal: Bright synthwave gradient with "SC"
-- Incognito: Grayscale with glasses and "INC"
+###  Icon Management
+- Detects incognito tab context
+- Updates toolbar icon theme:
+  - **Normal:** Synthwave neon gradient with “SC”
+  - **Private:** Grayscale with “INC” glasses
 
-## Usage Guide
+---
 
-### **Basic Operation**
-1. **Install extension** - Icon appears in toolbar
-2. **Browse normally** - Bookmarks auto-tagged and organized
-3. **Switch to incognito** - Icon changes, separate folder used
-4. **NSFW content** - Automatically moved to hidden directory
+##  Usage Guide
 
-### **Manual Controls**
-- **Toolbar popup**: Quick actions (analyze tabs, all bookmarks)
-- **Import HTML**: Import bookmark files with auto-tagging
-- **Bookmark Manager**: Full interface for browsing and filtering
+###  Basic Flow
+1. Install extension – icon appears in toolbar  
+2. Browse normally – bookmarks auto-tag  
+3. Switch to incognito – icon + folder change  
+4. NSFW – stored in hidden “Private Content” folder  
 
-### **Bookmark Manager Features**
-- **Search**: Find bookmarks by title, URL, or tags
-- **Filter**: Show/hide different directories
-- **Tag Cloud**: Click popular tags to filter
-- **Views**: Switch between grid and list layouts
-- **Sort**: By title, date, folder, or tag count
-- **Stats**: Total, tagged, and NSFW bookmark counts
+###  Manual Tools
+- **Popup:** Quick controls (scan tabs, tag all)  
+- **HTML Import:** Upload & auto-process exports  
+- **Manager UI:** Explore, filter, sort, and search  
 
-## Configuration
+###  Bookmark Manager Highlights
+-  Search: title, tag, or URL  
+-  Tag Cloud: popular tags = instant filter  
+-  View Switch: Grid ↔ List  
+-  Analytics: Total, Tagged, NSFW  
+-  Sorting: Title, Date, Folder, Tag Count
 
-### **Customizing Tags**
+---
+
+##  Configuration
+
+###  Customizing Tagging
 Edit `content-script.js`:
-```javascript
-this.minTagLength = 4;        // Minimum tag length
-this.maxTags = 5;             // Max tags per bookmark
-this.stopWords = new Set([    // Words to exclude
-    'the', 'and', 'or', ...
+
+```js
+this.minTagLength = 4;
+this.maxTags = 5;
+this.stopWords = new Set([
+  'the', 'and', 'or', // etc.
 ]);
 ```
 
-### **Customizing Appearance**
-Edit `style.css` or `manager.css`:
-- Change synthwave colors
-- Modify fonts and effects
-- Update grid layouts
+###  Theme & Style
+Modify `style.css` or `manager.css`:
+- Swap neon shades or font styles
+- Customize layouts and UI effects
 
-### **Privacy Settings**
-- NSFW content automatically hidden
-- Incognito bookmarks separate from normal
-- No external requests (all local processing)
+###  Privacy Defaults
+- No external web requests
+- NSFW folder is private and hidden
+- Incognito data separate and sandboxed
 
-## Troubleshooting
+---
 
-### **Icons Not Showing**
-- Ensure SVG files are in extension directory
-- Check Firefox permissions in `about:addons`
-- Try refreshing/reloading extension
+##  Troubleshooting
 
-### **Tags Not Appearing**
-- Wait 1-2 seconds after visiting page
-- Check console for content script errors
-- Verify bookmark exists before tagging
+###  Icons Missing
+- Confirm `icon-*.svg` files exist  
+- Check `about:addons` for permissions  
+- Reload the extension
 
-### **Folders Not Created**
-- Check Firefox bookmark permissions
-- Look in "Other Bookmarks" section
-- Reload extension and try again
+###  Tags Not Applying
+- Wait a few seconds post-visit  
+- Check browser console logs  
+- Confirm page was successfully bookmarked
 
-### **Manager Not Loading**
-- Disable other bookmark extensions
-- Check browser console for errors
-- Ensure `manager.html` file exists
+###  Missing Folders
+- Check “Other Bookmarks” section  
+- Verify permissions in manifest  
+- Reload extension, rebookmark
 
-## Customization Ideas
+###  Manager Won’t Load
+- Disable other bookmark managers  
+- Open DevTools → Console for errors  
+- Confirm `manager.html` exists and is valid
 
-### **Color Themes**
-- Cyberpunk: Change to green/blue neon
-- Synthwave: Pink/purple gradients  
-- Matrix: Green monochrome
-- Retro: Orange/teal combinations
+---
 
-### **Advanced Tagging**
-- Add domain-based tags
-- Include page language detection
-- Custom tag rules per website
-- Machine learning tag suggestions
+##  Customization Ideas
 
-### **Additional Features**
-- Export/backup bookmark data
-- Tag statistics and analytics
-- Bookmark sharing capabilities
-- Integration with other services
+###  Color Presets
+- **Cyberpunk** – Electric greens + cool blues  
+- **Synthwave** – Pink/purple haze  
+- **Matrix** – Black/green code aesthetic  
+- **Retro** – Sunset oranges + teal vibes
+
+###  Smarter Tagging
+- Tag by domain or site category  
+- Add multilingual language detection  
+- Rule-based or trained tag suggestions  
+- Integrate keyword ML model (optional)
+
+###  Advanced Features
+- Bookmark backup/export  
+- Usage analytics dashboard  
+- Shareable link/tag bundles  
+- API integrations (e.g. Notion, Obsidian)
