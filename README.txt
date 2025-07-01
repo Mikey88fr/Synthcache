@@ -1,2 +1,0 @@
-
-#  SynthCache – Firefox Extension
