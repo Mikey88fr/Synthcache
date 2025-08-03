@@ -744,6 +744,65 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
           message.data.details
         );
         break;
+        
+      case 'analyze-ai-content':
+        // Analyze page for AI-generated content
+        try {
+          if (typeof analyzePageForAIContent === 'function') {
+            const analysis = await analyzePageForAIContent(message.tabId);
+            return { success: true, analysis };
+          } else {
+            console.error('AI detector not loaded');
+            return { success: false, error: 'AI detector not available' };
+          }
+        } catch (error) {
+          console.error('Error analyzing AI content:', error);
+          return { success: false, error: error.message };
+        }
+        
+      case 'unlock-vault':
+        // Unlock NSFW vault with password
+        try {
+          const result = await unlockVault(message.password);
+          return result;
+        } catch (error) {
+          console.error('Error unlocking vault:', error);
+          return { success: false, error: error.message };
+        }
+        
+      case 'get-bookmarks':
+        // Get regular bookmarks for popup display
+        try {
+          const bookmarks = await getRecentBookmarks();
+          return { success: true, bookmarks };
+        } catch (error) {
+          console.error('Error getting bookmarks:', error);
+          return { success: false, error: error.message };
+        }
+        
+      case 'get-tags':
+        // Get bookmark tags for popup display
+        try {
+          const tags = await getBookmarkTags();
+          return { success: true, tags };
+        } catch (error) {
+          console.error('Error getting tags:', error);
+          return { success: false, error: error.message };
+        }
+        
+      case 'flag-nsfw':
+        // Flag content as NSFW and move to vault
+        try {
+          await addToNSFWVault({
+            url: message.url,
+            title: message.title,
+            dateAdded: new Date().toISOString()
+          });
+          return { success: true };
+        } catch (error) {
+          console.error('Error flagging NSFW:', error);
+          return { success: false, error: error.message };
+        }
     }
   } catch (error) {
     debugLogger.logGeneralError('MESSAGE_HANDLER', error, {
@@ -1027,3 +1086,222 @@ function extractAllUrls(bookmarkTree) {
   traverse(bookmarkTree);
   return urls;
 }
+
+// NSFW Vault Functionality
+// Initialize context menu for NSFW flagging
+try {
+  browser.contextMenus.create({
+    id: "flag-nsfw",
+    title: "Flag as NSFW",
+    contexts: ["page", "link"]
+  });
+} catch (error) {
+  // Context menu might already exist
+  console.log('Context menu already exists or creation failed:', error);
+}
+
+// Handle context menu clicks
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (info.menuItemId === "flag-nsfw") {
+    const url = info.linkUrl || info.pageUrl;
+    const title = tab.title;
+    
+    await addToNSFWVault({ url, title, dateAdded: new Date().toISOString() });
+  }
+});
+
+// Add bookmark to NSFW vault
+async function addToNSFWVault(bookmark) {
+  try {
+    // Get or create master password
+    let { masterPassword } = await browser.storage.local.get("masterPassword");
+    
+    if (!masterPassword) {
+      // Generate a temporary password until user sets one
+      masterPassword = 'temp_' + Date.now();
+      await browser.storage.local.set({ masterPassword });
+    }
+    
+    // Encrypt bookmark data
+    const encryptedData = await encryptBookmarkData(bookmark, masterPassword);
+    
+    // Get existing vault
+    const { nsfwVault = [] } = await browser.storage.local.get("nsfwVault");
+    
+    // Add to vault
+    nsfwVault.push(encryptedData);
+    await browser.storage.local.set({ nsfwVault });
+    
+    // Remove from regular bookmarks if it exists there
+    const existingBookmarks = await browser.bookmarks.search({ url: bookmark.url });
+    for (const existing of existingBookmarks) {
+      await browser.bookmarks.remove(existing.id);
+    }
+    
+    console.log('Bookmark added to NSFW vault:', bookmark.url);
+    
+  } catch (error) {
+    console.error('Error adding to NSFW vault:', error);
+  }
+}
+
+// Unlock vault with password
+async function unlockVault(password) {
+  try {
+    const { masterPassword, nsfwVault = [] } = await browser.storage.local.get(["masterPassword", "nsfwVault"]);
+    
+    if (!masterPassword || masterPassword !== password) {
+      return { success: false, error: 'Invalid password' };
+    }
+    
+    // Decrypt all vault bookmarks
+    const decryptedBookmarks = [];
+    for (const encryptedBookmark of nsfwVault) {
+      try {
+        const decrypted = await decryptBookmarkData(encryptedBookmark, password);
+        decryptedBookmarks.push(decrypted);
+      } catch (error) {
+        console.error('Error decrypting bookmark:', error);
+      }
+    }
+    
+    return { success: true, bookmarks: decryptedBookmarks };
+    
+  } catch (error) {
+    console.error('Error unlocking vault:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+// Encryption using Web Crypto API
+async function encryptBookmarkData(data, password) {
+  try {
+    const encoder = new TextEncoder();
+    const passwordData = encoder.encode(password);
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    
+    const keyMaterial = await crypto.subtle.importKey(
+      "raw",
+      passwordData,
+      { name: "PBKDF2" },
+      false,
+      ["deriveBits", "deriveKey"]
+    );
+    
+    const key = await crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        salt,
+        iterations: 100000,
+        hash: "SHA-256",
+      },
+      keyMaterial,
+      { name: "AES-GCM", length: 256 },
+      false,
+      ["encrypt"]
+    );
+    
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const dataToEncrypt = JSON.stringify(data);
+    
+    const encryptedData = await crypto.subtle.encrypt(
+      { name: "AES-GCM", iv },
+      key,
+      encoder.encode(dataToEncrypt)
+    );
+    
+    return {
+      encryptedData: Array.from(new Uint8Array(encryptedData)),
+      iv: Array.from(iv),
+      salt: Array.from(salt)
+    };
+  } catch (error) {
+    console.error('Encryption error:', error);
+    throw error;
+  }
+}
+
+// Decryption using Web Crypto API
+async function decryptBookmarkData(encryptedBookmark, password) {
+  try {
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    const passwordData = encoder.encode(password);
+    
+    const keyMaterial = await crypto.subtle.importKey(
+      "raw",
+      passwordData,
+      { name: "PBKDF2" },
+      false,
+      ["deriveBits", "deriveKey"]
+    );
+    
+    const key = await crypto.subtle.deriveKey(
+      {
+        name: "PBKDF2",
+        salt: new Uint8Array(encryptedBookmark.salt),
+        iterations: 100000,
+        hash: "SHA-256",
+      },
+      keyMaterial,
+      { name: "AES-GCM", length: 256 },
+      false,
+      ["decrypt"]
+    );
+    
+    const decryptedData = await crypto.subtle.decrypt(
+      { 
+        name: "AES-GCM", 
+        iv: new Uint8Array(encryptedBookmark.iv) 
+      },
+      key,
+      new Uint8Array(encryptedBookmark.encryptedData)
+    );
+    
+    return JSON.parse(decoder.decode(decryptedData));
+  } catch (error) {
+    console.error('Decryption error:', error);
+    throw error;
+  }
+}
+
+// Get recent bookmarks for popup
+async function getRecentBookmarks() {
+  try {
+    const bookmarks = await browser.bookmarks.getRecent(20);
+    return bookmarks.filter(bookmark => bookmark.url); // Only return actual bookmarks, not folders
+  } catch (error) {
+    console.error('Error getting recent bookmarks:', error);
+    return [];
+  }
+}
+
+// Get bookmark tags for popup
+async function getBookmarkTags() {
+  try {
+    // This is a simplified version - in a real implementation,
+    // you'd extract tags from bookmark titles or stored metadata
+    const { bookmarkTags = {} } = await browser.storage.local.get('bookmarkTags');
+    return bookmarkTags;
+  } catch (error) {
+    console.error('Error getting bookmark tags:', error);
+    return {};
+  }
+}
+
+// Listen for window focus changes to detect private browsing
+browser.windows.onFocusChanged.addListener(async (windowId) => {
+  if (windowId !== browser.windows.WINDOW_ID_NONE) {
+    try {
+      const window = await browser.windows.get(windowId);
+      const isIncognito = window.incognito;
+      
+      // Update icon based on private browsing status
+      const iconPath = isIncognito ? "icon-incognito-48.png" : "icon-48.png";
+      browser.browserAction.setIcon({ path: iconPath });
+      
+    } catch (error) {
+      console.error("Error checking private browsing:", error);
+    }
+  }
+});

@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "SynthCache",
+  "name": "SynthCache Advanced Bookmark Manager",
   "version": "1.0",
-  "description": "Synthwave-powered bookmark organizer with auto-tagging and retro-futuristic vibes",
+  "description": "Synthwave-powered bookmark organizer with auto-tagging, NSFW vault, AI content detection and retro-futuristic vibes",
 
   "permissions": [
     "bookmarks",
@@ -11,11 +11,12 @@
     "tabs",
     "activeTab",
     "downloads",
+    "contextMenus",
     "<all_urls>"
   ],
 
   "background": {
-    "scripts": ["browser-polyfill.js", "background.js"],
+    "scripts": ["browser-polyfill.js", "ai-detector.js", "content-tagger.js", "background.js"],
     "persistent": false
   },
 

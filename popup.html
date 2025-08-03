@@ -2,6 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SynthCache Advanced Bookmark Manager</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
@@ -9,19 +11,67 @@
       <h3>SynthCache</h3>
       <p>Retro-futuristic bookmark organization with synthwave vibes.</p>
       
-      <button id="open-manager-button">Open Bookmark Manager</button>
-      <button id="start-button">Analyze All Open Tabs</button>
-      <button id="analyze-bookmarks-button">Analyze All Existing Bookmarks</button>
+      <!-- Tab Navigation -->
+      <div class="tab-container">
+        <button class="tab-button active" data-tab="main">Main</button>
+        <button class="tab-button" data-tab="tags">Tags</button>
+        <button class="tab-button vault-tab" data-tab="vault">Vault</button>
+      </div>
       
-      <div class="info">
-        <p><strong>Features:</strong></p>
-        <ul>
-          <li>✓ Auto-extract keywords</li>
-          <li>✓ Detect NSFW content</li>
-          <li>✓ Normal vs Incognito folders</li>
-          <li>✓ HTML import support</li>
-          <li>✓ Icon changes with mode</li>
-        </ul>
+      <!-- Main Tab -->
+      <div class="tab-content active" id="main-tab">
+        <button id="open-manager-button">Open Bookmark Manager</button>
+        <button id="start-button">Analyze All Open Tabs</button>
+        <button id="analyze-bookmarks-button">Analyze All Existing Bookmarks</button>
+        <button id="analyze-page">Analyze Page for AI Content</button>
+        
+        <div class="info">
+          <p><strong>Features:</strong></p>
+          <ul>
+            <li>✓ Auto-extract keywords</li>
+            <li>✓ Detect NSFW content</li>
+            <li>✓ Normal vs Incognito folders</li>
+            <li>✓ HTML import support</li>
+            <li>✓ Icon changes with mode</li>
+            <li>✓ AI content detection</li>
+            <li>✓ Secure NSFW vault</li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Tags Tab -->
+      <div class="tab-content" id="tags-tab">
+        <div class="search-container">
+          <input type="text" id="search-bookmarks" placeholder="Search bookmarks...">
+        </div>
+        <div class="tags-cloud" id="tags-cloud"></div>
+        <div id="tagged-bookmarks" class="bookmarks-container"></div>
+      </div>
+      
+      <!-- Vault Tab -->
+      <div class="tab-content" id="vault-tab">
+        <div id="vault-locked" class="vault-container">
+          <div class="vault-locked-message">
+            <h4>Secure Vault</h4>
+            <p>Enter your master password to access your vault</p>
+            <input type="password" id="master-password" placeholder="Master password">
+            <button id="unlock-vault">Unlock</button>
+          </div>
+        </div>
+        <div id="vault-unlocked" class="vault-container hidden">
+          <div class="search-container">
+            <input type="text" id="search-vault" placeholder="Search vault...">
+          </div>
+          <div id="vault-bookmarks" class="bookmarks-container"></div>
+        </div>
+      </div>
+      
+      <!-- AI Analysis Result -->
+      <div id="ai-analysis-result" class="ai-analysis hidden">
+        <h4>AI Content Analysis</h4>
+        <p>Probability: <span id="ai-probability">Low</span></p>
+        <p id="ai-reason"></p>
+        <button id="close-analysis">Close</button>
       </div>
       
       <div class="status" id="status"></div>

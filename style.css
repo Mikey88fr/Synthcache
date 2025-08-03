@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
 .popup-container {
-  width: 340px;
+  width: 380px;
   padding: 20px;
   font-family: 'Orbitron', 'Courier New', monospace;
   background: linear-gradient(135deg, #0f0f23 0%, #1a0b33 30%, #2d1b69 60%, #0f0f23 100%);
@@ -151,6 +151,218 @@ button:active {
 
 h3 {
   animation: pulse 2s infinite;
+}
+
+/* Tab Container */
+.tab-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  border-bottom: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 8px 12px;
+  background: transparent;
+  color: #00ffff;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Orbitron', monospace;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  margin: 0 2px;
+}
+
+.tab-button.active {
+  color: #ff00ff;
+  border-bottom-color: #ff00ff;
+  text-shadow: 0 0 10px #ff00ff;
+}
+
+.tab-button:hover:not(.active) {
+  color: #ffffff;
+  text-shadow: 0 0 5px #00ffff;
+}
+
+.vault-tab {
+  color: #ffaa00 !important;
+}
+
+.vault-tab.active {
+  color: #ffaa00 !important;
+  border-bottom-color: #ffaa00;
+  text-shadow: 0 0 10px #ffaa00;
+}
+
+/* Tab Content */
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* Vault Styles */
+.vault-container {
+  text-align: center;
+}
+
+.vault-locked-message h4 {
+  color: #ffaa00;
+  font-size: 16px;
+  margin: 15px 0 10px 0;
+  text-shadow: 0 0 10px #ffaa00;
+}
+
+.vault-locked-message p {
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+#master-password {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 170, 0, 0.1);
+  border: 2px solid #ffaa00;
+  border-radius: 6px;
+  color: #ffaa00;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+#master-password::placeholder {
+  color: rgba(255, 170, 0, 0.7);
+}
+
+#unlock-vault {
+  background: linear-gradient(45deg, rgba(255, 170, 0, 0.2), rgba(255, 170, 0, 0.4));
+  border-color: #ffaa00;
+  color: #ffaa00;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Search Container */
+.search-container {
+  margin: 15px 0;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 2px solid #00ffff;
+  border-radius: 6px;
+  color: #00ffff;
+  font-family: 'Orbitron', monospace;
+  font-size: 12px;
+}
+
+.search-container input::placeholder {
+  color: rgba(0, 255, 255, 0.7);
+}
+
+/* Tags Cloud */
+.tags-cloud {
+  margin: 15px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag-item {
+  background: rgba(255, 0, 255, 0.2);
+  border: 1px solid #ff00ff;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 10px;
+  color: #ff00ff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tag-item:hover {
+  background: rgba(255, 0, 255, 0.4);
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+/* Bookmarks Container */
+.bookmarks-container {
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 10px 0;
+}
+
+.bookmark-item {
+  padding: 8px;
+  margin: 5px 0;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.bookmark-title {
+  color: #00ffff;
+  font-weight: bold;
+  margin-bottom: 3px;
+}
+
+.bookmark-url {
+  color: rgba(0, 255, 255, 0.7);
+  font-size: 10px;
+}
+
+/* AI Analysis Result */
+.ai-analysis {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 15, 35, 0.95);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1000;
+}
+
+.ai-analysis h4 {
+  color: #ffaa00;
+  font-size: 16px;
+  margin: 15px 0 10px 0;
+  text-shadow: 0 0 10px #ffaa00;
+}
+
+.ai-analysis p {
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+#ai-probability {
+  color: #ff00ff;
+  font-weight: bold;
+  text-shadow: 0 0 5px #ff00ff;
+}
+
+#close-analysis {
+  background: linear-gradient(45deg, rgba(255, 170, 0, 0.2), rgba(255, 170, 0, 0.4));
+  border-color: #ffaa00;
+  color: #ffaa00;
+  width: auto;
+  padding: 8px 16px;
+  margin-top: 15px;
 }
 
 /* Subtle grid pattern overlay */
